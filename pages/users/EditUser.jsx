@@ -1,27 +1,43 @@
 import { Dialog, Transition } from "@headlessui/react";
 import   React,{ useState, useEffect, Fragment } from "react";
 import baseUrl from "../../pages/api/baseUrl";
-import { toast } from 'react-nextjs-toast'
 import axios from 'axios'
+import AsyncLocalStorage from '@createnextapp/async-local-storage';
+
 const EditUser = ({ userId, setResponseUser }) => {
-    
+  const [tkn, setTkn] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const [user, setUser] = useState({
       id: "",
-       firstName: "",
-    lastName: "",
+      firstname: "",
+    lastname: "",
     email: "",
     gender: "",
-    dateOfBirth: "",
+    department: "",
+    role: "",
     phone: "",
     });
+
+    const readData = async () => {
+      let data = await AsyncLocalStorage.getItem('@key')
+      if (data) {
+        setTkn(data);
+      }else{
+        console.error("No token");
+      }
+    }
   
     useEffect(() => {
+      readData();
+      setLoading(true);
        axios({
             method: "GET",
             url:`${baseUrl} /users/${userId}`,
             headers: {
               "Content-Type": "application/json",
+              Authorization: "Bearer " + tkn,
             },
           }).then((res) =>{
             setUser(res.data);
@@ -31,7 +47,7 @@ const EditUser = ({ userId, setResponseUser }) => {
           }).catch ((error) => {
           (error);
         })
-      });
+       });
   
     function closeModal() {
       setIsOpen(false);
@@ -75,7 +91,7 @@ const EditUser = ({ userId, setResponseUser }) => {
     <Dialog
       as="div"
       className="fixed inset-0 z-10 overflow-y-auto"
-      onClose={closeModal}>
+      onOpen={openModal}>
       <div className="min-h-screen px-4 text-center">
         <Transition.Child
           as={Fragment}
@@ -100,7 +116,7 @@ const EditUser = ({ userId, setResponseUser }) => {
                   <input
                     type="text"
                     name="firstName"
-                    value={user.firstName}
+                    value={user.firstname}
                     onChange={(e) => handleChange(e)}
                     className="h-10 w-96 border mt-2 px-2 py-2"></input>
                 </div>
@@ -111,18 +127,18 @@ const EditUser = ({ userId, setResponseUser }) => {
                   <input
                     type="text"
                     name="lastName"
-                    value={user.lastName}
+                    value={user.lastname}
                     onChange={(e) => handleChange(e)}
                     className="h-10 w-96 border mt-2 px-2 py-2"></input>
                 </div>
                 <div className="h-14 my-4">
                   <label className="block text-gray-600 text-sm font-normal">
-                    Email Id
+                    Email 
                   </label>
                   <input
                     type="text"
                     name="emailId"
-                    value={user.emailId}
+                    value={user.email}
                     onChange={(e) => handleChange(e)}
                     className="h-10 w-96 border mt-2 px-2 py-2"></input>
                 </div>
@@ -150,18 +166,29 @@ const EditUser = ({ userId, setResponseUser }) => {
                   </div>
                   <div className="h-14 my-4">
                     <label className="block text-gray-600 text-sm font-normal">
-                      DateOfBirth
+                      Department
                     </label>
                     <input
                       type="text"
-                      name="dateOfBirth"
-                      value={user.dateOfBirth}
+                      name="department"
+                      value={user.department}
                       onChange={(e) => handleChange(e)}
                       className="h-10 w-96 border mt-2 px-2 py-2"></input>
                   </div>
                   <div className="h-14 my-4">
                     <label className="block text-gray-600 text-sm font-normal">
-                      phone
+                      Role
+                    </label>
+                    <input
+                      type="text"
+                      name="role"
+                      value={user.role}
+                      onChange={(e) => handleChange(e)}
+                      className="h-10 w-96 border mt-2 px-2 py-2"></input>
+                  </div>
+                  <div className="h-14 my-4">
+                    <label className="block text-gray-600 text-sm font-normal">
+                      Phone
                     </label>
                     <input
                       type="text"

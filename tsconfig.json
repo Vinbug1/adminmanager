@@ -18,6 +18,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/components/sidebar/Nav.jsagespages/components/sidebar/NavItem.jsusers/UserList.js", "pages/users/UserList.jsx", "pages/users/UserCard.jsx", "pages/users/AddUser.tsx", "pages/MainLayout.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/components/sidebar/Nav.jsagespages/components/sidebar/NavItem.jsusers/UserList.js", "pages/users/UserList.jsx", "pages/users/UserCard.jsx", "pages/users/AddUser.tsx", "pages/MainLayout.tsx", "pages/users/AddUser.jsx"],
   "exclude": ["node_modules"]
 }

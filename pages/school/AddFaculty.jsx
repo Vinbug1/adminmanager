@@ -58,7 +58,7 @@ const AddFaculty = () => {
   };
   return (
     <>
-    <div className="container mx-auto my-8 p-3">
+    {/* <div className="container mx-auto my-8 p-3">
       <div className="h-12">
         <button
           onClick={openModal}
@@ -66,7 +66,7 @@ const AddFaculty = () => {
           Department
         </button>
       </div>
-    </div>
+    </div> */}
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as="div"

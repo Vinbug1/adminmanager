@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FaFacebook, FaLinkedinIn, FaGoogle, FaRegEnvelope } from 'react-icons/fa'
 import { MdLockOutline } from 'react-icons/md'
 import baseUrl from "./api/baseUrl";
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router'
 import axios from 'axios';
-import { getUseData } from './redux/slices/userSlice';
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
-
+import AsyncLocalStorage from '@createnextapp/async-local-storage'
 
 const SignIn = () => {
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     let router = useRouter()
     const [user, setUser] = useState({ email: "", password: "" });
 
@@ -18,6 +15,7 @@ const SignIn = () => {
         const value = event.target.value;
         setUser({ ...user, [event.target.name]: value });
     };
+    
     const saveUser = () => {
         axios({
             method: "POST",
@@ -30,13 +28,15 @@ const SignIn = () => {
             // console.log("something new", dispatch);
             if (responseJson.status === 200) {
                 const accessToken = responseJson.data.token;
-                let userData = {
-                    fullName: responseJson.data.user,
-                    token: accessToken
-                }
+                //const fullName = responseJson.data.user;
+                // let userData = {
+                //     fullName: responseJson.data.user,
+                //     token: accessToken
+                // }
                 router.push('/users/AddUser');
                 AsyncLocalStorage.setItem('@key', 'accessToken');
-                dispatch(getUseData(userData))
+                //secureLocalStorage.setItem("string", "fullName");
+                //dispatch(getUseData(userData))
             }
         }).catch((error) => {
             console.log(error.message);

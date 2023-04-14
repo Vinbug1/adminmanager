@@ -1,13 +1,29 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import ExpenCard from "./ExpenCard";
 import baseUrl from "../api/baseUrl";
+import AsyncLocalStorage from '@createnextapp/async-local-storage';
 import axios from 'axios';
 import IndexLayout from "../layout/index"
 //import toast from '../utils/IndexToast';
 
 const AddExpenditure = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [tkn, setTkn] = useState("");
+
+    const readData = async () => {
+      let data= await AsyncLocalStorage.getItem('@key')
+      if (data) {
+        setTkn(data);
+      }else{
+        console.error("No token");
+      }
+    }
+
+    useEffect(() => {
+      readData();
+    }, []);
+
     const [expense, setExpense] = useState({
       amount: "",
       employee: "",
@@ -39,12 +55,13 @@ const AddExpenditure = () => {
     setExpense({ ...expense, [event.target.name]: value });
   };
 
-  const saveExpnse = async (e) => {
-    e.preventDefault();
+  const saveExpnse =  () => {
+   // e.preventDefault();
  axios({
       method: "POST",
       url:`${baseUrl}expenditures`,
       headers: {
+        Authorization: "Bearer " + tkn,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(expense),
@@ -53,6 +70,7 @@ const AddExpenditure = () => {
           toast.notify("Expenditure created successfully")
         }
           setExpense(responseJson);
+          closeModal();
           reset(e);
       }).catch((error) =>{
         toast.notify(error.message);
@@ -72,7 +90,7 @@ const AddExpenditure = () => {
   };
   return (
     <IndexLayout>
-    <div className="container mx-auto my-8 p-3">
+    <div className="item-center mx-4 my-4 pt-20 h-50">
       <div className="h-12">
         <button
           onClick={openModal}
@@ -189,7 +207,9 @@ const AddExpenditure = () => {
         </div>
       </Dialog>
     </Transition>
+    <div >
     <ExpenCard  expenses={responseExpen}/>
+    </div>
     {/* <UserList user={responseUser} /> */}
   </IndexLayout>
   )

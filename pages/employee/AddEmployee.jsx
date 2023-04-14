@@ -1,15 +1,29 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import EmpCard from "./EmpCard";
 import baseUrl from "../api/baseUrl";
 import axios from 'axios';
 import IndexLayout from "../layout/index";
+import AsyncLocalStorage from '@createnextapp/async-local-storage';
 //import toast from '../../pages/utils/IndexToast';
 
 const AddEmployee = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [tkn, setTkn] = useState("");
+  
+  const readData = async () => {
+    let data= await AsyncLocalStorage.getItem('@key')
+    if (data) {
+      setTkn(data);
+    }else{
+      console.error("No token");
+    }
+
+  }
+  useEffect(() => {
+    readData();
+  }, []);
     const [user, setUser] = useState({
-      image: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -23,7 +37,6 @@ const AddEmployee = () => {
     //     toast({ type, message });
     //   }, []);
   const [responseUser, setResponseUser] = useState({
-    image:"",
     firstName: "",
     lastName: "",
     email: "",
@@ -51,9 +64,11 @@ const AddEmployee = () => {
     e.preventDefault();
  axios({
       method: "POST",
-      url:`${baseUrl}employees`,
+      url:`${baseUrl}users/`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + tkn,
+
       },
       body: JSON.stringify(user),
     }).then((responseJson) =>{
@@ -71,7 +86,6 @@ const AddEmployee = () => {
   const reset = (e) => {
     e.preventDefault();
     setUser({
-      image:"",
       firstName: "",
     lastName: "",
     email: "",
@@ -85,7 +99,7 @@ const AddEmployee = () => {
   };
   return (
     <IndexLayout>
-    <div className="container mx-auto my-8 p-3">
+    <div className="item-center mx-4 my-4 pt-20 h-50">
       <div className="h-12">
         <button
           onClick={openModal}
@@ -97,7 +111,7 @@ const AddEmployee = () => {
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto"
+        className="fixed inset-0 z-20 overflow-y-auto"
         onClose={closeModal}>
         <div className="min-h-screen px-4 text-center">
           <Transition.Child
@@ -223,8 +237,9 @@ const AddEmployee = () => {
         </div>
       </Dialog>
     </Transition>
+    <div>
     <EmpCard  user={responseUser}/>
-    {/* <UserList user={responseUser} /> */}
+    </div>
   </IndexLayout>
   )
 }

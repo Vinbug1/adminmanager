@@ -11,6 +11,8 @@
   "dependencies": {
     "@createnextapp/async-local-storage": "^1.0.1",
     "@headlessui/react": "^1.7.13",
+    "@material-tailwind/react": "^1.4.2",
+    "@nextui-org/react": "^1.0.0-beta.12",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
@@ -24,6 +26,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
+    "react-select": "^5.7.2",
     "react-toastify": "^9.1.2",
     "typescript": "5.0.2"
   },
