@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import EditUser from "./EditUser";
-import User from "./User";
+//import User from "./User";
 import axios from "axios";
 import baseUrl from "../api/baseUrl";
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 import { toast } from "react-toastify";
 
 const UserList = ({user}) => {
@@ -13,8 +13,8 @@ const UserList = ({user}) => {
     const [responseUser, setResponseUser] = useState(null);
     const [tkn, setTkn] = useState();
 
-    let readData = async () => {
-        let data= await AsyncLocalStorage.getItem('@key')
+    let readData = () => {
+        let data= localStorage.getItem('@key')
         if (data) {
           setTkn(data);
         }else{
@@ -29,10 +29,9 @@ const UserList = ({user}) => {
                 method: "GET",
                 url:`${baseUrl}users`,
                     headers: {
-                        Authorization: "Bearer " + tkn,
+                        Authorization: "Bearer" + tkn,
                         "Content-Type": "application/json",
                     },
-
                 }).then((res) =>{
                     setUsers(res.data); 
                 }).catch ((error) => {
@@ -87,9 +86,9 @@ const UserList = ({user}) => {
                             <tbody className="bg-white">
                                 {users?.map((user,index) => {
                                     <div key={index}>
-                                        <p>
+                                        <td>
                                           {user.firstname}
-                                        </p>
+                                        </td>
                                         </div>
                                     // <User
                                     //     user={user}

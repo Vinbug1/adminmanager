@@ -1,12 +1,9 @@
-import React, {Fragment, useState,useEffect  } from 'react';
+import React, {useState,useEffect  } from 'react';
 // import EditUser from './EditUser';
 import { RxPerson } from 'react-icons/rx';
-import { MdOutlineCancel, MdDelete} from 'react-icons/md';
-import { FiEdit} from 'react-icons/fi';
 import baseUrl from '../api/baseUrl';
 import axios from 'axios';
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
-import { Dialog, Transition } from '@headlessui/react'
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 import User from './User';
 import { useRouter } from 'next/router';
 // import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
@@ -21,8 +18,8 @@ const UserCard = ({user}) => {
     const [responseUser, setResponseUser] = useState(null);
 
     
-    const readData = async () => {
-        let data = await AsyncLocalStorage.getItem('@key')
+    const readData =  () => {
+        let data = localStorage.getItem('@key')
         if (data) {
           setTkn(data);
         }else{
@@ -42,9 +39,7 @@ const UserCard = ({user}) => {
         readData();
         setLoading(true);
        axios({
-              method: "GET",
-                url: `${baseUrl}users`,
-                    headers: {
+              method: "GET", url: `${baseUrl}users`,headers: {
                         Authorization: "Bearer " + tkn,
                         "Content-Type": "application/json",
                     },

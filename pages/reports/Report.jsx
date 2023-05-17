@@ -12,7 +12,8 @@ const Report = () => {
   return (
     <IndexLayout>
       <div className="mt-40 ml-20 border-2 rounded-5">
-        <Fragment>
+        <UserList />
+        {/* <Fragment>
             <Accordion open={open === 1}>
               <AccordionHeader onClick={() => handleOpen(1)}>
                 Student Report
@@ -54,7 +55,7 @@ const Report = () => {
                 dreams.
               </AccordionBody>
             </Accordion>
-        </Fragment>
+        </Fragment> */}
       </div>
     </IndexLayout>
   )

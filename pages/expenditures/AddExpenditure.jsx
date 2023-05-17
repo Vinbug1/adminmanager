@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useState,useEffect } from "react";
 import ExpenCard from "./ExpenCard";
 import baseUrl from "../api/baseUrl";
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 import axios from 'axios';
 import IndexLayout from "../layout/index"
 //import toast from '../utils/IndexToast';
@@ -11,8 +11,8 @@ const AddExpenditure = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [tkn, setTkn] = useState("");
 
-    const readData = async () => {
-      let data= await AsyncLocalStorage.getItem('@key')
+    const readData = () => {
+      let data=  localStorage.getItem('@key')
       if (data) {
         setTkn(data);
       }else{

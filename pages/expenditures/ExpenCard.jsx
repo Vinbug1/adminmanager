@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
 import baseUrl from "../api/baseUrl";
 import axios from "axios";
-
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
+import { FaMoneyCheckAlt } from "react-icons/fa";
 const ExpenCard = () => {
-    const [expense, setExpenses] = useState();
-    const [loading, setLoading] = useState(true);
-    const [userId, setUserId] = useState(null);
-    const [responseUser, setResponseUser] = useState(null);
-
+    const [expenses, setExpenses] = useState();
+    const [tkn, setTkn] = useState("");
+    const readData =  () => {
+        let data =  localStorage.getItem('@key')
+        if (data) {
+          setTkn(data);
+        }else{
+          console.error("No token");
+        }
+      }
     useEffect(() => {
+        readData();
         axios({
                     method: "GET",
                     url: `${baseUrl}expenditures`,
                     headers: {
+                        Authorization: "Bearer " + tkn,
                         "Content-Type": "application/json",
                     },
                 }).then((res) =>{
@@ -23,46 +31,29 @@ const ExpenCard = () => {
             //setLoading(false);
         });
   return (
-    <div className="flex flex-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-4 gap-16 mt-8 w-full ">
-            {/* {users.map((user,index)=> ( 
-            <div  key={index} className="flex items-center relative p-8 w-full  border-gray-400 rounded-lg overflow-hidden shadow hover:shadow-md ml-5">
-                <div className=" bg-green-100  justify-center w-25 h-25 rounded-full  border-2 border-green-200">
-                    <RxPerson size={60} />
+    <div className=' pl-8 overflow-y-auto max-h-95  scrollbar-hide rounded-lg w-full'>
+    <div className='grid gap-4 grid-cols-4 grid-rows-4  p-14 '>
+        {expenses?.map((expense,index)=> ( 
+            <div  key={index} className='flex items-center p-1 h-39 w-25  bg-white rounded-lg  shadow hover:shadow-md '>
+                <div className='flex'>
+                    <div className=' bg-green-100 p-2  w-50 justify-center border-5 border-radius-5 border-green-200'>
+                    <FaMoneyCheckAlt size={80} color="green" />
+                    </div>
+                    <div className='pl-2'>
+                    <div className='flex gap-2  p-2'>
+                        <p className='font-medium text-gray-800'>{expense.staff}</p>
+                    </div>
+                        <p className='font-medium text-gray-800'>{expense.department}</p>
+                        <p className='text-sm text-gray-800'>{expense.purpose}</p>
+                        {/* <p className='text-sm text-gray-800'>{expense.phone}</p> */}
+                    </div>
                 </div>
-                <div className="ml-3">
-                    <p className="font-medium text-black">{user.firstName}</p>
-                    <p className="font-medium text-black">{user.laststName}</p>
-                    <p className="font-medium text-black">{user.DateOfBirth}</p>
-                    <p className="font-medium text-black">{user.Course}</p>
-                </div>
-            </div>
-
-            ))} */}
-
-            <div className="flex items-center relative p-8 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md ml-5">
-                <div className="w-12 h-12 rounded-full bg-gray-100"></div>
-                <div className="ml-3">
-                    <p className="font-medium text-gray-800">John doe</p>
-                    <p className="text-sm text-gray-600">Last online 4 hours ago</p>
-                </div>
-            </div>
-
-            <div className="flex items-center relative p-8 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md ml-5">
-                <div className="w-12 h-12 rounded-full bg-gray-100"></div>
-                <div className="ml-3">
-                    <p className="font-medium text-gray-800">John doe</p>
-                    <p className="text-sm text-gray-600">Last online 4 hours ago</p>
-                </div>
-            </div>
-
-            <div className="flex items-center relative p-8 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md mr-5">
-                <div className="w-12 h-12 rounded-full bg-gray-100"></div>
-                <div className="ml-3">
-                    <p className="font-medium text-gray-800">John doe</p>
-                    <p className="text-sm text-gray-600">Last online 4 hours ago</p>
-                </div>
-            </div>
+             
         </div>
+        ))}
+    </div>
+   
+</div> 
   )
 }
 

@@ -4,7 +4,7 @@ import EmpCard from "./EmpCard";
 import baseUrl from "../api/baseUrl";
 import axios from 'axios';
 import IndexLayout from "../layout/index";
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 //import toast from '../../pages/utils/IndexToast';
 
 const AddEmployee = () => {
@@ -12,7 +12,7 @@ const AddEmployee = () => {
     const [tkn, setTkn] = useState("");
   
   const readData = async () => {
-    let data= await AsyncLocalStorage.getItem('@key')
+    let data= await localStorage.getItem('@key')
     if (data) {
       setTkn(data);
     }else{

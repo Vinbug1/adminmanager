@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import   React,{ useState, useEffect, Fragment } from "react";
 import baseUrl from "../../pages/api/baseUrl";
 import axios from 'axios'
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 
 const EditUser = ({ userId, setResponseUser }) => {
   const [tkn, setTkn] = useState("");
@@ -12,16 +12,16 @@ const EditUser = ({ userId, setResponseUser }) => {
     const [user, setUser] = useState({
       id: "",
       firstname: "",
-    lastname: "",
-    email: "",
-    gender: "",
-    department: "",
-    role: "",
-    phone: "",
+      lastname: "",
+      email: "",
+      gender: "",
+      department: "",
+      role: "",
+      phone: "",
     });
 
-    const readData = async () => {
-      let data = await AsyncLocalStorage.getItem('@key')
+    const readData = () => {
+      let data = localStorage.getItem('@key')
       if (data) {
         setTkn(data);
       }else{

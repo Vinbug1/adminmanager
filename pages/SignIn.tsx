@@ -4,7 +4,7 @@ import { MdLockOutline } from 'react-icons/md'
 import baseUrl from "./api/baseUrl";
 import { useRouter } from 'next/router'
 import axios from 'axios';
-import AsyncLocalStorage from '@createnextapp/async-local-storage'
+// import AsyncLocalStorage from '@createnextapp/async-local-storage'
 
 const SignIn = () => {
     //const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const SignIn = () => {
                 //     token: accessToken
                 // }
                 router.push('/users/AddUser');
-                AsyncLocalStorage.setItem('@key', 'accessToken');
+                localStorage.setItem('@key', accessToken);
                 //secureLocalStorage.setItem("string", "fullName");
                 //dispatch(getUseData(userData))
             }

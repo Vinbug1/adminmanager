@@ -4,16 +4,16 @@ import UserCard from "./UserCard";
 import baseUrl from "../api/baseUrl";
 import axios from 'axios';
 import IndexLayout from "../layout/index";
-import AsyncLocalStorage from '@createnextapp/async-local-storage';
+// import AsyncLocalStorage from '@createnextapp/async-local-storage';
 import { toast } from "react-toastify";
-//import Select from "react-select";
+import Select from "react-select";
 
 const Adduser =() =>{
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDep, setIsOpenDep] = useState(false);
   const [tkn, setTkn] = useState();
   const [userStudents, setUserStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState();
+  const [student, setStudent] = useState();
  
 
   const [user, setUser] = useState({
@@ -92,8 +92,8 @@ const Adduser =() =>{
     setIsOpen(false);
   };
 
-  let readData = async () => {
-    let data= await AsyncLocalStorage.getItem('@key')
+  let readData =  () => {
+    let data= localStorage.getItem('@key')
     if (data) {
       setTkn(data);
     }else{
@@ -120,7 +120,7 @@ const Adduser =() =>{
   },[]);
 
   const [fees, setFees] = useState({
-    student: "",
+    student: `${student}`,
     department: "",
     phone: "",
     amount: "",
@@ -128,21 +128,21 @@ const Adduser =() =>{
     status: ""
   });
 
-  // const [responseFees, setResponseFees] = useState({ 
-  //   student: "",
-  //   department: "",
-  //   phone: "",
-  //   amount: "",
-  //   paymentType: "",
-  //   status: ""
-  // });
+  const [responseFees, setResponseFees] = useState({ 
+  student: "",
+    department: "",
+    phone: "",
+    amount: "",
+    paymentType: "",
+    status: ""
+  });
 
   let options = userStudents.map(function (userdata) {
     return { value: userdata.firstname + " " + userdata.lastname, label: userdata.firstname + " " + userdata.lastname };
   });
 
   function handleSelect(data) {
-    setSelectedStudent(data);
+    setStudent(data);
   }
 
 
@@ -158,11 +158,9 @@ const Adduser =() =>{
   const handleChangeFee = (event) => {
     const value = event.target.value;
     setFees({ ...fees,[event.target.name]: value });
-    // setSelectedStudent({data});
   };
 
   const saveFees = async (e) => {
-      //let studentdata ={ fees,selectedStudent}
       axios({
       method: "POST",
       url:`${baseUrl}payments`,
@@ -175,7 +173,7 @@ const Adduser =() =>{
         if (responseJson === 200) {
           toast('Fees created successfully', { autoClose: 2000, type: 'success' })
         }
-         // setResponseFees(responseJson);
+         setResponseFees(responseJson);
           resetFee(e);
       }).catch((error) =>{
         toast(error.message, { autoClose: 3000, type: 'error',position:'bottom-right' })
@@ -364,19 +362,19 @@ const Adduser =() =>{
                 </Dialog.Title>
                 <div className="flex max-w-md max-auto">
                   <div className="py-2">
-                      {/* <div>
+                      <div>
                         <label className="block text-gray-600 text-sm font-normal">
                           Student
                         </label>
                         <Select
-                        placeholder="Student"
-                        options={options}
-                          value={selectedStudent} 
+                           placeholder="select student"
+                           options={options}
+                          value={student} 
                           onChange={handleSelect} 
                           isClearable={true}
                           />
-                      </div> */}
-                      <div className="h-14 my-4">
+                      </div>
+                      {/* <div className="h-14 my-4">
                       <label className="block text-gray-600 text-sm font-normal">
                         Student
                       </label>
@@ -386,7 +384,7 @@ const Adduser =() =>{
                         value={fees.student}
                         onChange={(e) => handleChangeFee(e)}
                         className="h-10 w-96 border mt-2 px-2 py-2"/>
-                    </div>
+                    </div> */}
                   
                     <div className="h-14 my-4">
                       <label className="block text-gray-600 text-sm font-normal">

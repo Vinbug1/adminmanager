@@ -23,8 +23,8 @@ const PayFees = () => {
       setStudent(data);
     }
   
-    const readData = async () => {
-      let data= await AsyncLocalStorage.getItem('@key')
+    const readData = () => {
+      let data= localStorage.getItem('@key')
       if (data) {
         setTkn(data);
       }else{
